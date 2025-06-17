@@ -10,8 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function updateLunar(date) {
-    const lunar = Lunar.fromDate(date);
-    document.getElementById("lunar-date").innerText = `农历 ${lunar.lunarMonth}月${lunar.lunarDay}日`;
+    const lunar = convertSolarToLunar(date);
+    document.getElementById("lunar-date").innerText = lunar.lunarStr;
     document.getElementById("festival").innerText = lunar.festival ? `节日：${lunar.festival}` : '';
     document.getElementById("jieqi").innerText = lunar.jieqi ? `节气：${lunar.jieqi}` : '';
   }

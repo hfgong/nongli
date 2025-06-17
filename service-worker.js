@@ -1,11 +1,13 @@
-const CACHE_NAME = 'nongli-v2-cache';
+const CACHE_NAME = 'nongli-final-cache';
 const urlsToCache = [
   './',
   './index.html',
   './style.css',
+  './lunar-final.js',
   './main.js',
-  './lunar.js',
-  './manifest.json'
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', event => {

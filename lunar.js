@@ -83,7 +83,7 @@ class LunarData {
     [0, 0x02B6], // 1927
     [1, 0x0957], // 1928
     [0, 0x0497], // 1929
-    [0, 0x064B]  // 1930
+    [0, 0x064B], // 1930
     [0, 0x36A5], // 1931
     [1, 0x0DA9], // 1932
     [0, 0x0B55], // 1933
@@ -402,52 +402,6 @@ function convertSolarToLunar(date) {
     animal: lunar.getAnimal()
   };
 }
-// 公历日期选择入口
-document.addEventListener("DOMContentLoaded", () => {
-  const dateInput = document.getElementById("gregorian-date");
-  const today = new Date();
-  dateInput.valueAsDate = today;
-  updateLunar(today);
-
-  dateInput.addEventListener("change", () => {
-    const selectedDate = new Date(dateInput.value);
-    updateLunar(selectedDate);
-  });
-
-  function updateLunar(date) {
-    const lunar = convertSolarToLunar(date);
-    document.getElementById("lunar-date").innerText = lunar.lunarStr;
-    document.getElementById("festival").innerText = lunar.festival ? `节日：${lunar.festival}` : '';
-    document.getElementById("jieqi").innerText = lunar.jieqi ? `节气：${lunar.jieqi}` : '';
-  }
-
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js');
-  }
-});
-// PWA Service Worker 安装逻辑
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open('nongli-final-cache').then(cache => {
-      return cache.addAll([
-        './',
-        './index.html',
-        './style.css',
-        './lunar-final.js',
-        './manifest.json',
-        './icon-192.png',
-        './icon-512.png'
-      ]);
-    })
-  );
-});
-
-// PWA Service Worker 取缓存逻辑
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
-  );
-});
 /*!
  * 完整脱机版 lunar-javascript 封装完成 ✅
  * 
