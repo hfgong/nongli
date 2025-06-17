@@ -3,7 +3,7 @@ const urlsToCache = [
   './',
   './index.html',
   './style.css',
-  './lunar-final.js',
+  './lunar.js',
   './main.js',
   './manifest.json',
   './icon-192.png',
