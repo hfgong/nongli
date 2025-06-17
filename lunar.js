@@ -127,4 +127,4 @@ function convertSolarToLunar(date) {
  * - 保留接口兼容性，确保 main.js 可直接调用
  */
 
-console.log("lunar-full.js 农历库加载完成");
+console.log("lunar.js 农历库加载完成");
