@@ -1,18 +1,20 @@
-# nongli PWA 纯前端农历 App
+# nongli PWA v2 高精度农历版
 
 ## 简介
-- 纯前端农历工具，无广告、纯净、支持离线使用
-- PWA 支持，可添加到 iOS/Android 主屏幕
-- 使用内置农历逻辑库，支持节日和节气简单显示
+- 基于 lunar-javascript 开源库 (Apache License 2.0)
+- 完全离线、纯前端静态网页、PWA 支持
+- 支持节气、节日、高精度农历计算
+- 可部署于 GitHub Pages 免费托管使用
 
-## 部署到 GitHub Pages
+## 快速部署
 
-1. 创建 GitHub 仓库，上传本项目所有文件。
-2. 进入仓库 Settings → Pages，启用 GitHub Pages。
-3. 选择分支（如 `main`），保存。
-4. 系统生成公开 URL，即可访问与使用。
-5. 访问后即可将其添加到主屏幕，完全离线使用。
+1. 上传完整代码到 GitHub 仓库
+2. Settings → Pages → 选择 main 分支 + 根目录发布
+3. 获取公开访问地址
+4. 可分享朋友安装到手机桌面离线使用
 
-## 注意事项
-- 当前农历算法为简化版，适合自用。若需更高精度，请替换更完整农历库。
-- 完全离线支持，适合中国网络环境。
+## 许可
+
+农历算法核心使用开源项目：
+- [lunar-javascript](https://github.com/6tail/lunar-javascript)
+- Apache License 2.0
