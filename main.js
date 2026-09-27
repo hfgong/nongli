@@ -93,6 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return el;
     }));
 
+    $("yiji-date").textContent = `${selected.m}月${selected.d}日 农历${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`;
     $("yi").textContent = lunar.getDayYi().join(" ");
     $("ji").textContent = lunar.getDayJi().join(" ");
   }
