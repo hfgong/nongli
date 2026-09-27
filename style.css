@@ -174,14 +174,19 @@ header {
 .tag.other { color: var(--text-secondary); border-color: var(--border-color); }
 
 .yiji {
-  margin-top: 12px;
-  padding-top: 10px;
-  border-top: 1px dashed var(--border-color);
   font-size: 0.85rem;
   line-height: 1.6;
   color: var(--text-secondary);
 }
 .yiji > div { display: flex; gap: 8px; }
+.yiji > div + div { margin-top: 6px; }
+.yiji .yiji-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
 .yi, .ji {
   flex-shrink: 0;
   width: 1.5em;

@@ -24,7 +24,7 @@
       <button class="btn-top" id="today-btn" hidden>回到今天</button>
       <label class="btn-top date-btn">
         <span>📅</span><span>选择日期</span>
-        <input type="date" id="date-input" aria-label="选择日期">
+        <input type="date" id="date-input" min="0001-01-01" max="9999-12-31" aria-label="选择日期">
       </label>
     </div>
   </header>
@@ -42,10 +42,6 @@
     <div class="lunar-big" id="lunar-md"></div>
     <div class="ganzhi" id="ganzhi"></div>
     <div class="tags" id="tags"></div>
-    <div class="yiji">
-      <div><span class="yi">宜</span><span id="yi"></span></div>
-      <div><span class="ji">忌</span><span id="ji"></span></div>
-    </div>
   </section>
 
   <!-- 下一个重要农历节日（相对今天） -->
@@ -72,6 +68,13 @@
       <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span class="wkend">六</span><span class="wkend">日</span>
     </div>
     <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- 所选日期的宜忌 -->
+  <section class="card yiji">
+    <div class="yiji-label">📜 宜忌 · <span id="yiji-date"></span></div>
+    <div><span class="yi">宜</span><span id="yi"></span></div>
+    <div><span class="ji">忌</span><span id="ji"></span></div>
   </section>
 
   <footer>农历算法：<a href="https://github.com/6tail/lunar-javascript">lunar-javascript</a> · 离线可用</footer>
