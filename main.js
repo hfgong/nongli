@@ -8,9 +8,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const LUNAR_FESTIVALS = {
     "1-1": "春节", "1-15": "元宵节", "2-2": "龙抬头", "5-5": "端午节",
     "7-7": "七夕节", "7-15": "中元节", "8-15": "中秋节", "9-9": "重阳节",
-    "12-8": "腊八节", "12-23": "小年"
+    "12-8": "腊八节", "12-23": "北方小年", "12-24": "南方小年"
   };
   const SOLAR_HOLIDAYS = { "1-1": "元旦", "5-1": "劳动节", "10-1": "国庆节" };
+  const FESTIVAL_EMOJI = {
+    "春节": "🧧", "元宵节": "🏮", "龙抬头": "🐉", "清明节": "🌿", "端午节": "🛶",
+    "七夕节": "💞", "中元节": "🕯️", "中秋节": "🥮", "重阳节": "🌼", "腊八节": "🥣",
+    "北方小年": "🥟", "南方小年": "🍬", "除夕": "🧨",
+    "元旦": "🎉", "劳动节": "🛠️", "国庆节": "🎊"
+  };
+  const ZODIAC_EMOJI = {
+    "鼠": "🐭", "牛": "🐮", "虎": "🐯", "兔": "🐰", "龙": "🐲", "蛇": "🐍",
+    "马": "🐴", "羊": "🐑", "猴": "🐵", "鸡": "🐔", "狗": "🐶", "猪": "🐷"
+  };
+  // Solar-term emoji by season: 立春–谷雨, 立夏–大暑, 立秋–霜降, 立冬–大寒.
+  const TERM_SEASON = {
+    "🌸": "立春雨水惊蛰春分清明谷雨", "☀️": "立夏小满芒种夏至小暑大暑",
+    "🍂": "立秋处暑白露秋分寒露霜降", "❄️": "立冬小雪大雪冬至小寒大寒"
+  };
+  const termEmoji = t => Object.keys(TERM_SEASON).find(e => TERM_SEASON[e].includes(t)) || "";
+  const CELL_SHORT = { "北方小年": "北小年", "南方小年": "南小年" }; // fit narrow day cells
+  const withEmoji = n => FESTIVAL_EMOJI[n] ? `${FESTIVAL_EMOJI[n]} ${n}` : n;
 
   // All dates are plain {y, m, d} in the device's local calendar.
   const toYmd = dt => ({ y: dt.getFullYear(), m: dt.getMonth() + 1, d: dt.getDate() });
@@ -55,14 +73,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     $("lunar-md").textContent = `农历${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`;
     $("ganzhi").textContent =
-      `${lunar.getYearInGanZhi()}年 ${lunar.getMonthInGanZhi()}月 ${lunar.getDayInGanZhi()}日 · 属${lunar.getYearShengXiao()}`;
+      `${lunar.getYearInGanZhi()}年 ${lunar.getMonthInGanZhi()}月 ${lunar.getDayInGanZhi()}日 · ${ZODIAC_EMOJI[lunar.getYearShengXiao()]} 属${lunar.getYearShengXiao()}`;
 
     const tags = [];
     const seen = new Set();
-    const add = (text, cls) => { if (!seen.has(text)) { seen.add(text); tags.push([text, cls]); } };
-    important.forEach(n => add(n, "festival"));
-    if (holiday) add(holiday, "festival");
-    if (jieqi) add(jieqi, "term");
+    const add = (text, cls) => {
+      const key = text.replace(/^\S+ /, "");
+      if (!seen.has(key)) { seen.add(key); tags.push([text, cls]); }
+    };
+    important.forEach(n => add(withEmoji(n), "festival"));
+    if (holiday) add(withEmoji(holiday), "festival");
+    if (jieqi && jieqi !== "清明") add(`${termEmoji(jieqi)} ${jieqi}`, "term"); // 清明 already shows as 清明节
     solar.getFestivals().forEach(n => add(n, "other"));
     lunar.getOtherFestivals().forEach(n => add(n, "other"));
     $("tags").replaceChildren(...tags.map(([text, cls]) => {
@@ -84,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const { lunar, important } = info(v);
       if (important.length) {
         nextDate = v;
+        $("next-emoji").textContent = FESTIVAL_EMOJI[important[0]] || "🎉";
         $("next-name").textContent = important.join(" · ");
         $("next-date").textContent =
           `${v.y}年${v.m}月${v.d}日 星期${WEEK[weekday(v)]} · 农历${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`;
@@ -95,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function cellLabel(v) {
     const { lunar, important, jieqi, holiday } = info(v);
-    if (important.length) return [important[0], "festival"];
+    if (important.length) return [CELL_SHORT[important[0]] || important[0], "festival"];
     if (holiday) return [holiday, "festival"];
     if (jieqi) return [jieqi, "term"];
     if (lunar.getDay() === 1) return [`${lunar.getMonthInChinese()}月`, "month"];
