@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- 主背景：与 Mobile LaTeX / AirCopy 同系的蓝紫渐变 -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4338ca" />
+      <stop offset="45%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+
+    <!-- 柔和内发光层 -->
+    <radialGradient id="innerGlow" cx="28%" cy="22%" r="75%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.30" />
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.25" />
+    </radialGradient>
+
+    <!-- 日历页：白到暖白 -->
+    <linearGradient id="pageGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#eff6ff" />
+    </linearGradient>
+
+    <!-- 日历页眉：朱红（农历/节日色） -->
+    <linearGradient id="headGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444" />
+      <stop offset="100%" stop-color="#dc2626" />
+    </linearGradient>
+
+    <!-- 新月：金色渐变 -->
+    <linearGradient id="moonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde68a" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+
+    <!-- 星芒：青到紫（与 Mobile LaTeX 一致） -->
+    <linearGradient id="sparkleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#c084fc" />
+    </linearGradient>
+
+    <!-- 月牙遮罩：大圆减去偏移圆 -->
+    <mask id="crescent">
+      <rect width="512" height="512" fill="#000" />
+      <circle cx="248" cy="318" r="72" fill="#fff" />
+      <circle cx="286" cy="292" r="62" fill="#000" />
+    </mask>
+
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#090d16" flood-opacity="0.45" />
+    </filter>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- iOS / macOS 风格圆角底座 (Squircle) -->
+  <rect width="512" height="512" rx="118" fill="url(#bgGradient)" />
+  <rect width="512" height="512" rx="118" fill="url(#innerGlow)" />
+  <!-- 高光外描边，确保在深色/浅色背景上轮廓清晰 -->
+  <rect x="2" y="2" width="508" height="508" rx="116" fill="none" stroke="#ffffff" stroke-width="4" stroke-opacity="0.25" />
+
+  <g transform="translate(256 258) scale(1.14) translate(-256 -258)">
+  <g filter="url(#shadow)">
+    <!-- 1. 日历页 -->
+    <rect x="112" y="124" width="288" height="284" rx="40" fill="url(#pageGrad)" />
+    <!-- 页眉（上圆角） -->
+    <path d="M 112 196 L 112 164 Q 112 124 152 124 L 360 124 Q 400 124 400 164 L 400 196 Z" fill="url(#headGrad)" />
+    <!-- 页眉上的日期格点 -->
+    <g fill="#ffffff" fill-opacity="0.35">
+      <circle cx="176" cy="164" r="7" /><circle cx="216" cy="164" r="7" /><circle cx="256" cy="164" r="7" />
+      <circle cx="296" cy="164" r="7" /><circle cx="336" cy="164" r="7" />
+    </g>
+
+    <!-- 2. 装订环 -->
+    <rect x="170" y="96" width="24" height="60" rx="12" fill="#f8fafc" stroke="#1e3a8a" stroke-opacity="0.25" stroke-width="3" />
+    <rect x="318" y="96" width="24" height="60" rx="12" fill="#f8fafc" stroke="#1e3a8a" stroke-opacity="0.25" stroke-width="3" />
+
+    <!-- 3. 金色新月 -->
+    <rect width="512" height="512" fill="url(#moonGrad)" mask="url(#crescent)" />
+  </g>
+
+  <!-- 4. 星芒 ✦ 与小星点 -->
+  <path d="M 330 262 Q 330 290, 302 290 Q 330 290, 330 318 Q 330 290, 358 290 Q 330 290, 330 262 Z"
+        fill="url(#sparkleGrad)" filter="url(#glow)" />
+  <circle cx="366" cy="252" r="6" fill="#67e8f9" />
+  <circle cx="300" cy="358" r="4.5" fill="#fbbf24" />
+  </g>
+</svg>
