@@ -1,11 +1,11 @@
 {
-  "name": "nongli",
-  "short_name": "nongli",
-  "start_url": "./index.html",
+  "name": "农历",
+  "short_name": "农历",
+  "start_url": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
-  "description": "纯净农历应用",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "description": "离线农历：干支、生肖、节气、节日、宜忌",
   "icons": [
     {
       "src": "icon-192.png",

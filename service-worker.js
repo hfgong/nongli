@@ -1,5 +1,5 @@
 // Bump the version whenever any cached file changes so clients pick up the update.
-const CACHE_NAME = 'nongli-v3';
+const CACHE_NAME = 'nongli-v4';
 const urlsToCache = [
   './',
   './index.html',
