@@ -33,12 +33,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // All dates are plain {y, m, d} in the device's local calendar.
   const toYmd = dt => ({ y: dt.getFullYear(), m: dt.getMonth() + 1, d: dt.getDate() });
   const same = (a, b) => a.y === b.y && a.m === b.m && a.d === b.d;
-  const dayNum = v => Date.UTC(v.y, v.m - 1, v.d) / 86400000;
-  const addDays = (v, n) => {
-    const dt = new Date(Date.UTC(v.y, v.m - 1, v.d + n));
-    return { y: dt.getUTCFullYear(), m: dt.getUTCMonth() + 1, d: dt.getUTCDate() };
-  };
-  const weekday = v => new Date(Date.UTC(v.y, v.m - 1, v.d)).getUTCDay();
+  // Day arithmetic goes through the library's Solar so it matches its calendar:
+  // Julian before 1582-10-15, Gregorian after (1582-10-05..14 do not exist).
+  const S = v => Solar.fromYmd(v.y, v.m, v.d);
+  const fromSolar = s => ({ y: s.getYear(), m: s.getMonth(), d: s.getDay() });
+  const dayNum = v => S(v).getJulianDay();
+  const addDays = (v, n) => fromSolar(S(v).next(n));
+  const weekday = v => S(v).getWeek();
+  const MIN = { y: 1, m: 1, d: 1 }, MAX = { y: 9999, m: 12, d: 31 };
 
   // Lunar info for a date, with the festival names this app treats as important.
   function info(v) {
@@ -102,6 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let nextDate = null;
   function renderNext() {
     for (let i = 1; i <= 400; i++) {
+      if (dayNum(today) + i > dayNum(MAX)) break;
       const v = addDays(today, i);
       const { lunar, important } = info(v);
       if (important.length) {
@@ -132,7 +135,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const cells = [];
     for (let i = 0; i < 42; i++) {
       const v = addDays(start, i);
-      if (i === 35 && v.m !== view.m) break; // drop an all-next-month 6th row
+      if (i % 7 === 0 && v.y * 12 + v.m > view.y * 12 + view.m) break; // month is over
+      if (dayNum(v) < dayNum(MIN) || dayNum(v) > dayNum(MAX)) { cells.push(document.createElement("span")); continue; }
       const [label, cls] = cellLabel(v);
       const btn = document.createElement("button");
       btn.className = "cell";
@@ -158,7 +162,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function shiftMonth(n) {
     const m = view.m - 1 + n;
-    view = { y: view.y + Math.floor(m / 12), m: ((m % 12) + 12) % 12 + 1 };
+    const y = view.y + Math.floor(m / 12);
+    if (y < MIN.y || y > MAX.y) return;
+    view = { y, m: ((m % 12) + 12) % 12 + 1 };
     renderCalendar();
   }
 
@@ -168,7 +174,10 @@ document.addEventListener("DOMContentLoaded", () => {
   $("next-card").addEventListener("click", () => nextDate && select(nextDate));
   $("date-input").addEventListener("change", e => {
     const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(e.target.value);
-    if (m) select({ y: +m[1], m: +m[2], d: +m[3] });
+    if (!m || +m[1] < MIN.y) return;
+    let v = { y: +m[1], m: +m[2], d: +m[3] };
+    if (v.y === 1582 && v.m === 10 && v.d > 4 && v.d < 15) v = { y: 1582, m: 10, d: 15 };
+    select(v);
   });
 
   // Swipe left/right on the calendar to change month.
