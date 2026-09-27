@@ -1,9 +1,9 @@
 # nongli PWA v2 高精度农历版
 
 ## 简介
-- 基于 lunar-javascript 开源库 (Apache License 2.0)
+- 基于 lunar-javascript 开源库 (MIT License)
 - 完全离线、纯前端静态网页、PWA 支持
-- 支持节气、节日、高精度农历计算
+- 支持干支、生肖、节气、节日、高精度农历计算
 - 可部署于 GitHub Pages 免费托管使用
 
 ## 快速部署
@@ -17,4 +17,6 @@
 
 农历算法核心使用开源项目：
 - [lunar-javascript](https://github.com/6tail/lunar-javascript)
-- Apache License 2.0
+- MIT License（见 `LICENSE-lunar-javascript`）
+
+本项目其余代码使用 Apache License 2.0（见 `LICENSE`）。
