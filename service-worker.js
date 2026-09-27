@@ -1,6 +1,6 @@
 // Network-first: when online every load gets the latest files (so a normal refresh
 // picks up new deploys); the cache is only a fallback for offline use.
-const CACHE_NAME = 'nongli-v8';
+const CACHE_NAME = 'nongli-v9';
 const urlsToCache = [
   './',
   './index.html',
@@ -8,8 +8,12 @@ const urlsToCache = [
   './lunar.js',
   './main.js',
   './manifest.json',
+  './icon.svg',
+  './favicon.svg',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './icon-maskable-512.png',
+  './apple-touch-icon.png'
 ];
 
 self.addEventListener('install', event => {

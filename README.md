@@ -16,6 +16,11 @@
 3. 获取公开访问地址
 4. 可分享朋友安装到手机桌面离线使用
 
+## 图标
+
+`icon.svg` 为本项目原创（与 Mobile LaTeX、AirCopy 同系列风格），PNG 图标由其导出：
+`icon-192.png`、`icon-512.png`、`icon-maskable-512.png`（Android 自适应图标）、`apple-touch-icon.png`（iOS 主屏幕）。
+
 ## 许可
 
 农历算法核心使用开源项目：
