@@ -208,6 +208,14 @@ document.addEventListener("DOMContentLoaded", () => {
   renderNext();
 
   if ("serviceWorker" in navigator) {
+    // When an updated service worker takes over, reload once so the page runs the new files.
+    // Skipped on first install (no previous controller), when there is nothing to update.
+    if (navigator.serviceWorker.controller) {
+      let reloaded = false;
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (!reloaded) { reloaded = true; location.reload(); }
+      });
+    }
     navigator.serviceWorker.register("./service-worker.js");
   }
 });
