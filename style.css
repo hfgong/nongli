@@ -1,36 +1,293 @@
-body {
+/* Visual style follows hfgong.github.io/mobile-latex: slate palette, blue accent, soft cards. */
+:root {
+  --bg-color: #f8fafc;
+  --surface-color: #ffffff;
+  --surface-hover: #f1f5f9;
+  --surface-active: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
+  --primary-color: #2563eb;
+  --primary-light: #eff6ff;
+  --primary-text: #1d4ed8;
+  --festival-color: #dc2626;
+  --festival-light: #fef2f2;
+  --term-color: #059669;
+  --term-light: #ecfdf5;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #090d16;
+    --surface-color: #131b2e;
+    --surface-hover: #1e293b;
+    --surface-active: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --border-color: #1e293b;
+    --primary-color: #3b82f6;
+    --primary-light: #1e293b;
+    --primary-text: #93c5fd;
+    --festival-color: #f87171;
+    --festival-light: #3b1216;
+    --term-color: #34d399;
+    --term-light: #0b2a22;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+}
+
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
-  background: #ffffff;
-  color: #333;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.app {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 20px;
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+html, body { overflow-x: hidden; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  min-height: 100dvh;
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  padding: max(8px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
+           max(8px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+}
+
+button { font: inherit; }
+[hidden] { display: none !important; }
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0 10px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.brand-logo {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #4338ca 0%, #2563eb 50%, #0284c7 100%);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  box-shadow: 0 2px 5px rgba(37, 99, 235, 0.3);
+  user-select: none;
+}
+
+.header-actions { display: flex; gap: 6px; }
+
+.btn-top {
+  position: relative;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  padding: 6px 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  min-height: 32px;
+  transition: all 0.15s ease;
+}
+.btn-top:active { transform: scale(0.95); background: var(--surface-active); }
+#today-btn { color: var(--primary-text); background: var(--primary-light); }
+
+/* Native date picker stretched invisibly over the button */
+.date-btn input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Cards */
+.card {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 14px;
+  margin-bottom: 10px;
+}
+
+/* Day detail */
+.hero-top { display: flex; align-items: center; gap: 12px; }
+.solar-big {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--primary-color);
+  font-variant-numeric: tabular-nums;
+}
+.solar-meta { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+.today-badge {
+  margin-left: auto;
+  align-self: flex-start;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--primary-text);
+  background: var(--primary-light);
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+.lunar-big { font-size: 1.6rem; font-weight: 700; margin-top: 12px; letter-spacing: 1px; }
+.ganzhi { color: var(--text-secondary); font-size: 0.92rem; margin-top: 4px; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tags:empty { display: none; }
+.tag {
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+.tag.festival { color: var(--festival-color); background: var(--festival-light); }
+.tag.term { color: var(--term-color); background: var(--term-light); }
+.tag.other { color: var(--text-secondary); border-color: var(--border-color); }
+
+.yiji {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-color);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+.yiji > div { display: flex; gap: 8px; }
+.yi, .ji {
+  flex-shrink: 0;
+  width: 1.5em;
+  height: 1.5em;
+  line-height: 1.5em;
+  margin-top: 0.05em;
   text-align: center;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.8rem;
 }
+.yi { background: var(--term-color); }
+.ji { background: var(--festival-color); }
 
-h1 {
-  font-size: 32px;
-  margin-bottom: 20px;
+/* Next festival */
+.next-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
+.next-body { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+.next-emoji {
+  font-size: 1.8rem;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  background: var(--festival-light);
+}
+.next-info { flex: 1; min-width: 0; }
+.next-name { font-size: 1.25rem; font-weight: 700; color: var(--festival-color); }
+.next-date { font-size: 0.82rem; color: var(--text-secondary); margin-top: 2px; }
+.next-count { font-size: 2rem; font-weight: 800; color: var(--primary-color); font-variant-numeric: tabular-nums; }
+.next-count small { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-left: 3px; }
+.next { cursor: pointer; }
 
-.date-picker {
-  margin-bottom: 20px;
+/* Month calendar */
+.calendar { padding: 10px 8px 8px; }
+.cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.cal-title { font-weight: 700; font-size: 1rem; }
+.btn-nav {
+  width: 34px;
+  height: 30px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-color);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
 }
+.btn-nav:active { background: var(--surface-active); }
 
-input[type="date"] {
-  font-size: 18px;
-  padding: 8px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
+.weekdays, .grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+.weekdays span {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  padding: 4px 0;
 }
+.wkend { color: var(--festival-color) !important; }
+.grid { gap: 3px; }
 
-.result > div {
-  margin: 10px 0;
-  font-size: 20px;
+.cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 4px 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  overflow: hidden;
 }
+.cell:active { background: var(--surface-hover); }
+.cell .d { font-size: 1.05rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.cell .l {
+  font-size: 0.66rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cell.weekend .d { color: var(--festival-color); }
+.cell .l.festival { color: var(--festival-color); font-weight: 600; }
+.cell .l.term { color: var(--term-color); font-weight: 600; }
+.cell .l.month { color: var(--primary-text); font-weight: 600; }
+.cell.outside { opacity: 0.35; }
+.cell.today { background: var(--primary-light); }
+.cell.today .d { color: var(--primary-color); }
+.cell.selected { border-color: var(--primary-color); }
+
+footer {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  padding: 6px 0 4px;
+}
+footer a { color: inherit; }

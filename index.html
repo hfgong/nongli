@@ -2,25 +2,78 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>nongli</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>农历</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="离线农历：干支、生肖、节气、节日、宜忌">
+  <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#090d16" media="(prefers-color-scheme: dark)">
   <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="stylesheet" href="style.css">
   <script defer src="lunar.js"></script>
   <script defer src="main.js"></script>
 </head>
 <body>
-  <div class="app">
-    <h1>农历</h1>
-    <div class="date-picker">
-      <input type="date" id="gregorian-date">
+  <header>
+    <div class="brand">
+      <span class="brand-logo">农</span>
+      <span>农历</span>
     </div>
-    <div class="result">
-      <div id="lunar-date"></div>
-      <div id="ganzhi"></div>
-      <div id="festival"></div>
-      <div id="jieqi"></div>
+    <div class="header-actions">
+      <button class="btn-top" id="today-btn" hidden>回到今天</button>
+      <label class="btn-top date-btn">
+        <span>📅</span><span>选择日期</span>
+        <input type="date" id="date-input" aria-label="选择日期">
+      </label>
     </div>
-  </div>
+  </header>
+
+  <!-- 当日详情 -->
+  <section class="card hero" aria-live="polite">
+    <div class="hero-top">
+      <div class="solar-big" id="solar-day"></div>
+      <div class="solar-meta">
+        <div id="solar-ym"></div>
+        <div id="solar-week"></div>
+      </div>
+      <span class="today-badge" id="today-badge">今天</span>
+    </div>
+    <div class="lunar-big" id="lunar-md"></div>
+    <div class="ganzhi" id="ganzhi"></div>
+    <div class="tags" id="tags"></div>
+    <div class="yiji">
+      <div><span class="yi">宜</span><span id="yi"></span></div>
+      <div><span class="ji">忌</span><span id="ji"></span></div>
+    </div>
+  </section>
+
+  <!-- 下一个重要农历节日（相对今天） -->
+  <section class="card next" id="next-card">
+    <div class="next-label">⏳ 下一个节日</div>
+    <div class="next-body">
+      <div class="next-emoji" id="next-emoji"></div>
+      <div class="next-info">
+        <div class="next-name" id="next-name"></div>
+        <div class="next-date" id="next-date"></div>
+      </div>
+      <div class="next-count"><span id="next-days"></span><small>天后</small></div>
+    </div>
+  </section>
+
+  <!-- 月历 -->
+  <section class="card calendar">
+    <div class="cal-head">
+      <button class="btn-nav" id="prev-month" aria-label="上个月">‹</button>
+      <div class="cal-title" id="cal-title"></div>
+      <button class="btn-nav" id="next-month" aria-label="下个月">›</button>
+    </div>
+    <div class="weekdays">
+      <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span class="wkend">六</span><span class="wkend">日</span>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <footer>农历算法：<a href="https://github.com/6tail/lunar-javascript">lunar-javascript</a> · 离线可用</footer>
 </body>
 </html>
