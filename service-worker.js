@@ -1,5 +1,6 @@
-// Bump the version whenever any cached file changes so clients pick up the update.
-const CACHE_NAME = 'nongli-v7';
+// Network-first: when online every load gets the latest files (so a normal refresh
+// picks up new deploys); the cache is only a fallback for offline use.
+const CACHE_NAME = 'nongli-v8';
 const urlsToCache = [
   './',
   './index.html',
@@ -13,7 +14,9 @@ const urlsToCache = [
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME)
+      // cache: 'reload' bypasses the browser HTTP cache so stale copies are never stored.
+      .then(cache => cache.addAll(urlsToCache.map(url => new Request(url, { cache: 'reload' }))))
   );
   self.skipWaiting();
 });
@@ -27,8 +30,18 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
+  const { request } = event;
+  if (request.method !== 'GET' || new URL(request.url).origin !== self.location.origin) return;
   event.respondWith(
-    caches.match(event.request, { ignoreSearch: true }).then(response => response || fetch(event.request))
+    // cache: 'no-cache' revalidates with the server (cheap 304 when unchanged).
+    fetch(request, { cache: 'no-cache' })
+      .then(response => {
+        if (response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+        }
+        return response;
+      })
+      .catch(() => caches.match(request, { ignoreSearch: true }))
   );
 });
